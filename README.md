@@ -1,5 +1,7 @@
 # `updo`
 
+[![Build Status](https://travis-ci.com/daveio/updo.svg?branch=master)](https://travis-ci.com/daveio/updo)
+
 Update all the things!
 
 A configurable and extensible way to kick off updates for various package managers, version managers, source control repositories, and pretty much anything else.
