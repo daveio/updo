@@ -1,9 +1,6 @@
 ---
 title: updo
 ---
-
-An extensible update manager.
-
 # Build status
 
 <table>
@@ -33,7 +30,7 @@ An extensible update manager.
   </tbody>
 </table>
 
-# Notes
+An extensible update manager.
 
 See also [`zsh-updo`][link-zsh-updo] for easy installation and integration with `zsh`.
 
