@@ -33,8 +33,10 @@ An extensible update manager.
   </tbody>
 </table>
 
+# Notes
+
 See also [`zsh-updo`][link-zsh-updo] for easy installation and integration with `zsh`.
 
-## NOT YET FUNCTIONAL OR READY FOR USE!
+**NOT YET FUNCTIONAL OR READY FOR USE!**
 
 [link-zsh-updo]: https://github.com/daveio/zsh-updo
