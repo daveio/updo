@@ -1,7 +1,6 @@
 ---
 title: updo
 ---
-# Build status
 
 <table>
   <thead>
