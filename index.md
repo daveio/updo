@@ -6,10 +6,32 @@ An extensible update manager.
 
 # Build status
 
-`master`|`gh-pages`
---|--
-[![Build Status](https://travis-ci.com/daveio/updo.svg?branch=master)](https://travis-ci.com/daveio/updo/branches)|[![Build Status](https://travis-ci.com/daveio/updo.svg?branch=gh-pages)](https://travis-ci.com/daveio/updo/branches)
-
+<table>
+  <thead>
+    <tr>
+      <th>
+        <code>master</code>
+      </th>
+      <th>
+        <code>gh-pages</code>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="https://travis-ci.com/daveio/updo/branches" rel="nofollow">
+          <img src="https://travis-ci.com/daveio/updo.svg?branch=master" alt="master branch build status"
+        </a>
+      </td>
+      <td>
+        <a href="https://travis-ci.com/daveio/updo/branches" rel="nofollow">
+          <img src="https://travis-ci.com/daveio/updo.svg?branch=gh-pages" alt="gh-pages branch build status"
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 See also [`zsh-updo`][link-zsh-updo] for easy installation and integration with `zsh`.
 
