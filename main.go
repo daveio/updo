@@ -2,70 +2,74 @@ package main
 
 import (
 	"fmt"
-	"github.com/tucnak/store"
+	"github.com/daveio/updo/commands"
+	"github.com/daveio/updo/storage"
+	"github.com/daveio/updo/verbose"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"os"
-	"time"
 )
 
 var (
-	app = kingpin.
-		New("updo", "Update all the things!")
-	debug = app.
-		Flag("debug", "Enable debug mode.").
-		Short('d').
-		Bool()
-	updateCommand = app.
-			Command("update", "Update everything except updo itself.").
-			Alias("u")
-	selfUpdateCommand = app.
-			Command("self-update", "Update updo itself (and nothing else)").
-			Alias("g")
+	V                  = verbose.V
+	appVersion         = fmt.Sprintf("%d.%d.%d", AppVersionMajor, AppVersionMinor, AppVersionPatch)
+	appVersionWithDate = fmt.Sprintf("%s %d", appVersion, AppVersionDate)
+	app                = kingpin.
+				New("updo", "Update all the updatables.")
+	mVerbose = app.
+			Flag("verbose", "Show more detail.").
+			Short('v').
+			Bool()
+	runCommand = app.
+			Command("run", "Short form: 'r'. Run the update process.").
+			Alias("r")
+	dryRunFlag = runCommand.
+			Flag("dry-run", "Print the commands which would be executed, but don't actually run them").
+			Short('d').
+			Bool()
+	helloCommand = app.
+			Command("hello", "Used by shell plugins like zsh-updo to identify this binary. Prints GitHub URL.")
 )
 
-type Directive struct {
-	Key string `json:"key"`
-	Value  string `json:"value"`
-}
-
-type AppConfig struct {
-	Directives []Directive `json:"directive"`
-}
-
 func init() {
-	store.Init("updo")
-}
-
-func loadConfig() AppConfig {
-	var appConfig AppConfig
-	err := store.Load("config.json", &appConfig)
-	if err != nil {
-		panic(err)
-	}
-	return appConfig
-}
-
-func saveConfig(appConfig *AppConfig) {
-	err := store.Save("config.json", &appConfig)
-	if err != nil {
-		panic(err)
-	}
+	storage.InitStorage("updo")
 }
 
 func main() {
-	appConfig := loadConfig()
-	if *debug {
-		fmt.Println("Debug mode enabled.")
+	app.Version(appVersionWithDate)
+	appCmd, appErr := app.Parse(os.Args[1:])
+	verbose.InitV(*mVerbose, appVersion)
+	V("Verbose mode enabled")
+	conf, errL := storage.LoadConfig()
+	if errL != nil {
+		panic(errL)
 	}
-	app.Version("0.0.1")
-	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
-	case updateCommand.FullCommand():
-		fmt.Printf("UPDATING ALL THE THINGS")
-		fmt.Println()
-	case selfUpdateCommand.FullCommand():
-		fmt.Printf("UPDATING UPDO ITSELF")
-		fmt.Println()
+	if len(conf.Apps) < 1 {
+		conf.Apps = make(map[string]storage.App)
 	}
-	time.Sleep(1 * time.Second)
-	saveConfig(&appConfig)
+	errBuiltins := storage.LoadBuiltinApps(&conf)
+	if errBuiltins != nil {
+		panic(errBuiltins)
+	}
+	switch kingpin.MustParse(appCmd, appErr) {
+	case runCommand.FullCommand():
+		V("starting the update process")
+		if *dryRunFlag {
+			V("dry run: not executing anything")
+		} else {
+			V("executing update commands")
+		}
+		errRun := commands.Run(conf, *dryRunFlag)
+		if errRun != nil {
+			panic(errRun)
+		}
+		V("finished update process")
+	case helloCommand.FullCommand():
+		commands.Hello()
+	default:
+		V("BUG: invalid command uncaught by CLI parser")
+	}
+	errSa := storage.SaveConfig(&conf)
+	if errSa != nil {
+		panic(errSa)
+	}
 }

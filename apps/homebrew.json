@@ -1,0 +1,17 @@
+{
+  "notes": "the Homebrew package manager",
+  "useFullEnvironment": true,
+  "detectAsRoot": false,
+  "detectScript": [
+    "brew commands"
+  ],
+  "prepAsRoot": false,
+  "prepScript": [],
+  "updateAsRoot": false,
+  "updateScript": [
+    "brew update",
+    "brew upgrade"
+  ],
+  "postAsRoot": false,
+  "postScript": []
+}
