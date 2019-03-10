@@ -3,15 +3,19 @@
   "useFullEnvironment": true,
   "detectAsRoot": false,
   "detectScript": [
-    "brew commands"
+    ["brew", "commands"]
   ],
   "prepAsRoot": false,
-  "prepScript": [],
+  "prepScript": [
+    []
+  ],
   "updateAsRoot": false,
   "updateScript": [
-    "brew update",
-    "brew upgrade"
+    ["brew", "update"],
+    ["brew", "upgrade"]
   ],
   "postAsRoot": false,
-  "postScript": []
+  "postScript": [
+    []
+  ]
 }
