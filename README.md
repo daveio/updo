@@ -1,5 +1,5 @@
 # `updo`
-
+ 
 Generate OATH-TOTP one-time passwords from the command line.
 
 <table>
